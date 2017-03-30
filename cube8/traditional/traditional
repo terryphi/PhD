@@ -1,0 +1,132 @@
+set title "8 cubes hexahedron test, CSG geo"
+
+% --- Boundary of geometry:
+
+surf 2  cuboid -150 150 -150 150 -150 150
+
+% --- Boundary at infinity
+
+surf 3 inf
+
+% --- yz-plane
+
+surf yzPlane px 0.0
+
+% --- xz-plane
+
+surf xzPlane py 0.0
+
+% --- xy-plane
+
+surf xyPlane pz 0.0
+
+% --- Cube with two metre edge length:
+
+surf 2metreCube cuboid -100 100 -100 100 -100 100
+
+% --- Geometry based on the normal CSG-model
+
+cell HiHiHi 0    fuelHiDHiTHiU    yzPlane  xzPlane  xyPlane -2metreCube
+cell HiLoHi 0    fuelHiDLoTHiU    yzPlane -xzPlane  xyPlane -2metreCube
+cell HiHiLo 0    fuelHiDHiTLoU    yzPlane  xzPlane -xyPlane -2metreCube
+cell HiLoLo 0    fuelHiDLoTLoU    yzPlane -xzPlane -xyPlane -2metreCube
+cell LoHiHi 0    fuelLoDHiTHiU   -yzPlane  xzPlane  xyPlane -2metreCube
+cell LoLoHi 0    fuelLoDLoTHiU   -yzPlane -xzPlane  xyPlane -2metreCube
+cell LoHiLo 0    fuelLoDHiTLoU   -yzPlane  xzPlane -xyPlane -2metreCube
+cell LoLoLo 0    fuelLoDLoTLoU   -yzPlane -xzPlane -xyPlane -2metreCube
+
+% --- Blanket cell around the eight cubes
+
+cell 11  0 blanket   2metreCube -2
+
+% --- Outside the geometry
+
+cell 20  0 outside    2
+
+% --- Black BC
+
+set bc 1
+
+% --- Fuel salts:
+set acelib "./xs/sss_jeff311u.xsdata"
+
+% --- Material for cube at (+,+,+) corner (umsh cell 0)
+mat fuelHiDHiTHiU  -4.10 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65         
+U-233.06c        2.85
+
+% --- Material for cube at (+,-,+) corner (umsh cell 1)
+mat fuelHiDLoTHiU  -4.10 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        2.85
+
+% --- Material for cube at (+,+,-) corner (umsh cell 2)
+mat fuelHiDHiTLoU  -4.10 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Material for cube at (+,-,-) corner (umsh cell 3)
+mat fuelHiDLoTLoU  -4.10 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Material for cube at (-,+,+) corner (umsh cell 4)
+mat fuelLoDHiTHiU  -2.05 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        2.85
+
+% --- Material for cube at (-,-,+) corner (umsh cell 5)
+mat fuelLoDLoTHiU  -2.05 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        2.85
+
+% --- Material for cube at (-,+,-) corner (umsh cell 6)
+mat fuelLoDHiTLoU  -2.05 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Material for cube at (-,-,-) corner (umsh cell 7)
+mat fuelLoDLoTLoU  -2.05 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Blanket material 
+mat blanket     -0.10 rgb 50 250 50
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65         
+U-233.06c        2.85
+
+% --- Run parameters:
+
+set pop 5000 200 20
+
+% --- Geometry plot:
+
+plot 1 500 500  10
+plot 1 500 500 -10
+
+% --- Mesh plots:
+
+mesh 10 1 500 500
+mesh 1 500 500
+
+% --- Power level:
+
+set power 8.0

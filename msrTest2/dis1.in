@@ -1,0 +1,11 @@
+7 fuel  1
+./Sandbox/msrTest3/constant/polyMesh/volPower
+-4.1 900.0
+100 4 5 4 3 2
+./Sandbox/msrTest3/constant/polyMesh/points
+./Sandbox/msrTest3/constant/polyMesh/faces
+./Sandbox/msrTest3/constant/polyMesh/owner
+./Sandbox/msrTest3/constant/polyMesh/neighbour
+1
+1
+./Sandbox/msrTest3/constant/polyMesh/map

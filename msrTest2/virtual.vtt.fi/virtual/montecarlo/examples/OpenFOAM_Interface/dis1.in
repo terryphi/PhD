@@ -1,0 +1,11 @@
+7 fuel  1
+constant/polyMesh/volPower
+-4.1 900.0
+100 4 5 4 3 2
+constant/polyMesh/points
+constant/polyMesh/faces
+constant/polyMesh/owner
+constant/polyMesh/neighbour
+0/rhok 1
+0/T 1
+constant/polyMesh/map

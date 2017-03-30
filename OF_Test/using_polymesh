@@ -1,0 +1,122 @@
+set title "8 cubes hexahedron test"
+set acelib "./xs/sss_jeff311u.xsdata"
+set savesrc "./Sandbox/cube8/using_polymesh/dyn/"
+% --- Boundary of geometry:
+
+surf 2  cuboid -150 150 -150 150 -150 150
+
+% --- Boundary at infinity
+
+surf 3 inf
+
+% --- OpenFOAM mesh based geometry (universe 1, bg universe 2)
+%     Search mesh split condition is 5 cells
+%     Search mesh has maximum of two levels with maximum of 2^n 
+%     cells per level
+
+solid 1 1 2
+5 2 2 2
+"./Sandbox/cube8/using_polymesh/constant/polyMesh/points"
+"./Sandbox/cube8/using_polymesh/constant/polyMesh/faces"
+"./Sandbox/cube8/using_polymesh/constant/polyMesh/owner"
+"./Sandbox/cube8/using_polymesh/constant/polyMesh/neighbour"
+"./Sandbox/cube8/using_polymesh/constant/polyMesh/materials"
+
+% --- Blanket cell in universe 2 (background universe)
+
+cell 11  2 blanket   -3
+
+% --- Geometry consists of mesh-based universe and background universe
+
+cell 19  0 fill 1    -2
+
+% --- Outside the geometry
+
+cell 20  0 outside    2
+
+% --- Black BC
+
+set bc 1
+
+% --- Fuel salts:
+
+% --- Material for cube at (+,+,+) corner (umsh cell 0)
+mat fuelHiDHiTHiU  -4.10 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65         
+U-233.06c        2.85
+
+% --- Material for cube at (+,-,+) corner (umsh cell 1)
+mat fuelHiDLoTHiU  -4.10 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        2.85
+
+% --- Material for cube at (+,+,-) corner (umsh cell 2)
+mat fuelHiDHiTLoU  -4.10 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Material for cube at (+,-,-) corner (umsh cell 3)
+mat fuelHiDLoTLoU  -4.10 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Material for cube at (-,+,+) corner (umsh cell 4)
+mat fuelLoDHiTHiU  -2.05 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        2.85
+
+% --- Material for cube at (-,-,+) corner (umsh cell 5)
+mat fuelLoDLoTHiU  -2.05 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        2.85
+
+% --- Material for cube at (-,+,-) corner (umsh cell 6)
+mat fuelLoDHiTLoU  -2.05 tmp 1200.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Material for cube at (-,-,-) corner (umsh cell 7)
+mat fuelLoDLoTLoU  -2.05 tmp 600.0
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65
+U-233.06c        1.425
+
+% --- Blanket material 
+mat blanket     -0.10 rgb 50 250 50
+Li-7.06c        77.50
+F-19.06c       167.50
+Th-232.06c      19.65         
+U-233.06c        2.85
+
+% --- Run parameters:
+
+set pop 5000 1 2
+
+% --- Geometry plot:
+
+plot 1 500 500  10
+plot 1 500 500 -10
+
+% --- Mesh plots:
+
+mesh 10 1 500 500
+mesh 1 500 500
+
+% --- Power level:
+
+set power 8.0

@@ -1,0 +1,70 @@
+set acelib "./xs/sss_jeff311u.xsdata"
+
+
+% --- Box containing bunny:
+
+surf 1 cyl 0.0 0.0 17.0 -0.1 27
+
+cell 1 0 fill 1  -1
+cell 2 0 outside  1
+
+% --- Unstructured mesh based universe:
+
+surf 3 inf
+cell 4 2 air -3
+
+% --- Format for Serpent 2.1.23:
+
+solid 2 1 2                        % type, universe, bacground universe
+11 4 5 4 4 4                      % search mesh split, depth and sizes
+2 1E-5                             % ray test, merge radius
+body fuel fuel fuel                % solid name, cell name, material name
+file fuel "./Sandbox/STLTest/cubeSTL.stl" 1.00 5 5 5   % body name, file, scaling factor, origin
+
+%switching raytest from 1 to 2 seems to fix the aspect ratio problem.
+%still have have problem iith the hole.
+%%BACKUP..ORIGINAL
+%%solid 2 1 2                        % type, universe, bacground universe
+%%10 4 5 4 3 2                       % search mesh split, depth and sizes
+%%1 1E-5                             % ray test, merge radius
+%%body fuel fuel fuel                % solid name, cell name, material name
+%%file fuel "./Sandbox/STLTest/cubeSTL.stl" 1.00 0 0 0   % body name, file, scaling factor, origin
+
+
+% --- Format for Serpent 2.1.22:
+
+% solid 2 1 2 
+% 10 4 5 4 3 2 
+% 1 1E-5
+% file "bunny.stl" 1.00 0 0 0
+% body fuel fuel fuel
+
+% --- Format for Serpent 2.1.21 and earlier:
+
+% solid 2 1 2 
+% 10 4 5 4 3 2 
+% 1 1E-5
+% fuel fuel "cubeSTL.stl" 1.00 0 0 0
+
+% --- Composition: 
+
+mat fuel  4.7984E-02 rgb 222 222 222
+92235.03c 4.4994E-02 
+92238.03c 2.4984E-03 
+92234.03c 4.9184E-04
+
+mat air   1E-18 rgb  200 250 200
+2004.03c 1.0
+
+% --- Run & plot parameters:
+
+set pop 1000 100 20
+
+plot 1 1000 1000
+plot 2 1000 1000
+plot 3 1000 1000
+
+% --- Fission rate detector:
+
+det 1 dr  -6 void
+

@@ -1,0 +1,31 @@
+set title "Critical Sphere"
+
+% Surfaces 
+
+surf 1 sph 0 0 0 10 %bounding of u235 sphere.
+surf 2 sph 0 0 0 50 %outside boundary
+
+%cells
+cell 1 0 fuel		-1
+cell 2 0 water		1 -2
+cell 3 0 outside	2
+
+%materials
+mat fuel    -19.1 %negative means g/cc
+92235.09c   -1.00 %100% pure U235
+
+
+mat water -1.0  moder lwtr 1001
+ 1001.06c     0.666667
+ 8016.06c     0.333333
+
+%------data--------
+
+set pop 5000 20 20
+
+therm lwtr lwj3.11t
+
+set acelib "./xs/sss_jeff311u.xsdata"
+
+plot 3 500 500
+mesh 3 500 500
